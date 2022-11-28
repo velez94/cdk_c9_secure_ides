@@ -1,0 +1,44 @@
+project_name: 'CloudNativeIDEs'
+
+# DevSecOps Account Environment setup
+devsecops_account: "123456789012"
+devsecops_region: "us-east-1"
+
+
+network_definitions:
+  create_vpc: True
+  vpc_cidr: "192.168.0.0/16"
+  max_azs: 2
+  nat_gateways: 0
+  subnet_configuration:
+      - name: "public"
+        cidr_mask : 24
+        subnet_type : "public"
+      - name: "ides"
+        cidr_mask : 24
+        subnet_type : "isolate"
+
+environment_props:
+  - environment_name: 'DevSecOpsIDE-ProjectBlog'
+    description: "DevSecOps IDE Blog"
+    instance_size: 't3.small'
+    automatic_stop_time_minutes: 30
+    resize_volume: "True"
+    ebs_volume_size: '17'
+    bootstrap_environment: "True"
+    bootstrap_commands: 'bootstrap.sh'
+    subnet_type: 'public'
+    owner_arn: 'arn:aws:sts::123456789012:assumed-role/AWSReservedSSO_LabvelDevSecOpsRW_a4790b6a3d6c520a/DevSecOpsAdm'
+
+    #codecommit_repos:
+    #  - ''
+
+# Tags definitions align with enterprise instructions
+tags:
+  - key: 'Project'
+    value: 'SecureIdes'
+  - key: 'Stack'
+    value: 'SecureIdes'
+  - key: 'Environment'
+    value: 'Prod'
+
