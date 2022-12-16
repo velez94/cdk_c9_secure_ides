@@ -182,11 +182,11 @@ class CustomEnvConstruct(Construct):
 
                                          )
 
-            boots_env.node.add_dependency(resize_disk)
-
             c3 = CustomResource(self, f"Bootstrap-{props['environment_name']}", service_token=boots_env.function_arn,
                                 properties=dict(StackCloud9Environment=props["environment_name"],
                                                 BootstrapArguments=props["bootstrap_commands"],
                                                 ),
                                 )
-            c3.node.add_dependency(c2)
+            if props["resize_volume"] == "True":
+                boots_env.node.add_dependency(resize_disk)
+                c3.node.add_dependency(c2)
